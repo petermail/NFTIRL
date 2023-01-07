@@ -11,3 +11,90 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltipText {
+  visibility: hidden;
+  position: absolute;
+  width: 500px;
+  z-index: 1;
+  border-radius: 15px;
+  background-color: #444444;
+  color: white;
+  padding: 10px;
+  opacity: 0.95;
+}
+.tooltip:hover .tooltipText {
+  visibility: visible;
+}
+
+.title {
+  margin: 5px;
+}
+.bold {
+  font-weight: bold;
+}
+
+.blueprints {
+  margin: 20px;
+}
+.blueprint {
+  border: 0 solid black;
+  border-bottom-width: 2px;
+}
+.blueprint:hover {
+  background-color: #eee;
+}
+.variants {
+  display: flex;
+  flex-wrap: wrap;
+}
+.variant {
+  min-width: 100px;
+}
+.variant:hover {
+  background-color: #ddd;
+}
+.divImage {
+  margin: 20px;
+}
+.images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.margin20 {
+  margin: 20px;
+}
+.selectedImage {
+  border: 2px solid black;
+}
+.choiceImage {
+  opacity: 0.5;
+}
+.choiceImage:hover {
+  opacity: 1;
+}
+
+.imgWithDetail {
+  position: relative;
+  display: inline-block;
+}
+.imgWithDetail .imgDetail {
+  visibility: hidden;
+  position: absolute;
+  width: 400px;
+  z-index: 1;
+  border-radius: 15px;
+  background-color: #444444;
+  color: white;
+  padding: 10px;
+  left: 200px;
+  top: -100px;
+}
+.imgWithDetail:hover .imgDetail {
+  visibility: visible;
+}
