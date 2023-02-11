@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getBlueprintsAsync, getPrintArea, getPrintProvidersAsync, getShopsAsync, getVariant, getVariantsAsync, saveProductAsync, uploadImageAsync } from "../Api/PrintifyApi";
 import ChooseImage from "./ChooseImage";
 import DivBlueprints from "./DivBlueprints";
+import DivWallet from './DivWallet';
 import DivImage from "./DivImage";
 import DivProduct from "./DivProduct";
 import DivVariants from "./DivVariants";
@@ -77,6 +78,7 @@ const ChoicePage = () => {
         </div>
     );
     return (<div>
+        <DivWallet />
         <DivImage handleCreateProduct={handleCreateProduct} src={imgSrc} setSrc={setImgSrc} />
         <ChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} />
         <DivBlueprints blueprints={blueprints} handleChooseBlueprint={handleChooseBlueprint} 
