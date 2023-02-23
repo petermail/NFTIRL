@@ -2,26 +2,25 @@ import '../index.css';
 
 
 const DivBlueprint = (props) => {
-    const { blueprint, handleChooseBlueprint, divVariants, divProducts } = props;
+    const { blueprint, handleChooseBlueprint, divVariants, divProducts, isSelected } = props;
 
     if (blueprint) {
         return (
-        <div className="blueprint" onClick={() => handleChooseBlueprint(blueprint)}>
+        <div className={"blueprint" + (isSelected ? " selected" : "")} onClick={() => handleChooseBlueprint(blueprint)}>
             <div className="tooltip">
                 <h4 className="title">{blueprint.title}</h4>
-                <div className="tooltipText">
+                {/*<div className="tooltipText">
                     <div className="bold">{blueprint.brand}</div>
                     <div dangerouslySetInnerHTML={{__html: blueprint.description}}></div>
-                </div>
+                </div>*/}
             </div>
             <div>
             {
-                blueprint.images.map(x => <img key={x} alt='' src={x} width='100' height='100' />)
+                blueprint.images.slice(0, 1).map(x => <img key={x} alt='' className="topImage" src={x} width='160' height='160' />)
             }
             </div>
-            {divVariants(blueprint.id)}
-            {divProducts(blueprint.id)}
-            {/*<div onClick={() => handleChooseBlueprint(blueprint)}>choose</div>*/}
+            {/*divVariants(blueprint.id)*/}
+            {/*divProducts(blueprint.id)*/}
         </div>)
     } else { return (<div />) }
 }

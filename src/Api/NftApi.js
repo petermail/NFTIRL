@@ -1,22 +1,13 @@
-const Moralis = require("moralis").default;
-const { EvmChain } = require("@moralisweb3/common-evm-utils");
-
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-const port = 4000;
-
-// allow access to React app domain
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  })
-);
+import { Alchemy, Network } from 'alchemy-sdk';
 
 const web3ApiKey = 'Yd4AgRAh1GDBL0ToVljpCGtSnaWLu9LpaBCm8yQdKfRn7nEKgIBbwLoZvqAOlUu8';
+const alchemyApiKey = "81bLOeHHLypewF27GRdkijvOvjBldB5p";
 
+const config = {
+  apiKey: alchemyApiKey,
+  network: Network.ETH_MAINNET
+};
+const alchemy = new Alchemy(config);
 
 const options = {
   method: 'GET',
@@ -29,20 +20,13 @@ const options = {
   }
 };
 
-var wasStarted = false;
+var lastWallet = '';
 export const getAllNftsAsync = async (address) => {
-  if (!wasStarted) {
-    await Moralis.start({ apiKey: web3ApiKey });
-    wasStarted = true;
-
-    app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`);
-    });
-  }
-  const chain = EvmChain.ETHEREUM;
-  const response = await Moralis.EvmApi.nft.getWalletNFTs({ address, chain });
-  console.log(response);
-  return response?.result.toJSON();
+  if (address.length === 0) { return null; }
+  if (lastWallet === address) { return null; }
+  lastWallet = address;
+  const nfts = await alchemy.nft.getNftsForOwner(address);
+  return nfts;
 }
 export const getNft = (contract, tokenId, updateImage) => {
     contract = '0x2953399124F0cBB46d2CbACD8A89cF0599974963';

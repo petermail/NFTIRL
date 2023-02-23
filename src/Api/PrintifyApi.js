@@ -69,3 +69,55 @@ export const getPrintArea = (variantIds, imageId, x, y, scale, angle = 0) => {
         }]
     };
 }
+
+export const createLineItem = (variantId, printProviderId, quantity = 1) => {
+    return {
+        variant_id: variantId,
+        print_provider_id: printProviderId,
+        quantity: quantity
+    };
+}
+export const createOrderAsync = async (shopId, externalId, lineItems, shippingMethod, 
+    firstName, lastName, email, phone, country, region, address1, address2,
+    city, zip) => {
+    return await axios.post(proxy, {
+        cors: baseUrl + "shops/" + shopId + "/orders.json",
+        method: "POST",
+        external_id: externalId,
+        line_items: lineItems,
+        shipping_method: shippingMethod,
+        send_shipping_notification: true,
+        address_to: {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone,
+            country: country,
+            region: region,
+            address1: address1,
+            address2: address2,
+            city: city,
+            zip: zip
+        }
+    }, getHeaders());
+}
+export const calculateShipping = async (shopId, lineItems, firstName, lastName, 
+    email, phone, country, region, address1, address2, city, zip) => {
+    return await axios.post(proxy, {
+        cors: baseUrl + "shops/" + shopId + "/orders/shipping.json",
+        method: "POST",
+        line_items: lineItems,
+        address_to: {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone,
+            country: country,
+            region: region,
+            address1: address1,
+            address2: address2,
+            city: city,
+            zip: zip
+        }
+    }, getHeaders());
+}
