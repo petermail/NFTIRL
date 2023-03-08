@@ -15,7 +15,7 @@ code {
 }
 
 .body {
-  width: 980px;
+  width: 960px;
   margin: 0 auto;
 }
 
@@ -41,7 +41,8 @@ code {
 }
 .items {
   display: flex;
-  width: 300px;
+  flex-wrap: wrap;
+  max-width: 540px;
 }
 .wrap {
   display: flex;
@@ -135,7 +136,7 @@ code {
 .clWhite, .clSolidWhite {
   background-color: white;
 }
-.clSportGrey {
+.clSportGrey, .clHeatherGrey {
   background-color: gray;
 }
 .clPurple, .clTeamPurple {
@@ -159,10 +160,10 @@ code {
 .clOrange {
   background-color: orange;
 }
-.clAthleticHeather {
+.clAthleticHeather, .clCharcoal {
   background-color: #959599;
 }
-.clDarkGreyHeather {
+.clDarkGreyHeather, .clDarkHeather {
   background-color: rgb(66, 66, 66);
 }
 .clHeatherMauve {
@@ -179,6 +180,24 @@ code {
 }
 .clSmoke {
   background-color: #464646;
+}
+.clForestGreen {
+  background-color: darkgreen;
+}
+.clMilitaryGreen {
+  background-color: #2b5223;
+}
+.clDaisy {
+  background-color: #e6e338
+}
+.clDarkChocolate {
+  background-color: #1b1616;
+}
+.clIrishGreen {
+  background-color: #51c53a
+}
+.clLightBlue {
+  background-color: #a0d0f0
 }
 
 .wallet {
@@ -303,6 +322,9 @@ code {
   font-size: 1.8em;
   font-weight: bold;
 }
+.priceContext {
+  margin: 0 10px;
+}
 .clear {
   clear: both;
 }
@@ -333,6 +355,10 @@ code {
   background-color: #c7c7c7;
   border-radius: 4px;
   width: fit-content;
-  padding: 4px;
+  padding: 8px 12px;
   cursor: pointer;
+}
+.disabled, .disabled:hover {
+  cursor: default;
+  background-color: #ff9393;
 }

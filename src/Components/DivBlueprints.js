@@ -14,6 +14,12 @@ const DivBlueprints = (props) => {
         }
     }
 
+    useEffect(() => {
+        if (blueprints && blueprints.length > 0 && !blueprint) {
+            handleChooseBlueprint(blueprints[0]);
+        }
+    });
+
     return (<div className="blueprints">
         <div className={"navIcon" + (left === 0 ? " disable" : "")} onClick={() => handleNav(-1)}><img src={process.env.PUBLIC_URL + "/icon_left.png"} alt="left" /></div>
         { blueprints && blueprints.slice(left, left + 5).map(x => 

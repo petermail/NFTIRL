@@ -23,9 +23,20 @@ const DivVariants = (props) => {
             }
         }
     }, [selectedColor, selectedSize]);
+    useEffect(() => {
+        if (variants && variants.length > 0) {
+            if (!variants.find(x => x.options.color.replace(/\s|\//g, '') === selectedColor)) {
+                setSelectedColor(x => variants[0].options.color.replace(/\s|\//g, ''));
+            }
+            if (!variants.find(x => x.options.size === selectedSize)) {
+                setSelectedSize(x => variants[0].options.size);
+            }
+            console.log("variants:", variants);
+        }
+    }, [variants]);
 
     //console.log(variants);
-    //console.log(colors);
+    console.log(colors);
     return (<div className="variants">
         {/*variants?.map(x => <DivVariant key={x.id} variant={x} handleChooseVariant={handleChooseVariant} handleCreateProduct={handleCreateProduct} />)*/}
         <div className="items">
