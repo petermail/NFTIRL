@@ -161,14 +161,16 @@ const ChoicePage = () => {
     }, [chain])
 
     const createOrder = () => {
-        const front = product.print_areas.map(x => x.placeholders.find(y => y.position === "front"))[0];
+        //const front = product.print_areas.map(x => x.placeholders.find(y => y.position === "front"))[0];
         //console.log("front:", front);
-        const imageId = front.images[0].id;
-        const lineItem = createLineItem(variantId, printProvider.current.id, imgSrc, 0.5, 0.5, 1);
+
+        const lineItem = createLineItem(blueprint.current.id, variantId, printProvider.current.id, imgSrc, 0.5, 0.5, 1);
         const shippingMethod = 1; //Standard shipping
         const s = shipping.current;
-        createOrderAsync(shopId, "128717161", wallet, [lineItem], shippingMethod, 
-            s.firstName, s.lastName, s.email, s.phone, s.country, "", s.address1, s.address2, s.city, s.zip)
+        const countryCode = getCode(s.country);
+        const dateCode = (new Date()).toString();
+        createOrderAsync(shopId, wallet + "_" + dateCode, wallet, [lineItem], shippingMethod, 
+            s.firstName, s.lastName, s.email, s.phone, countryCode, "", s.address1, s.address2, s.city, s.zip)
             .then(x => console.log('order created:', x));
     }
 

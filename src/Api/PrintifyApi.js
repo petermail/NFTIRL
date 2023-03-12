@@ -79,8 +79,9 @@ export const getPrintArea = (variantIds, imageId, x, y, scale, angle = 0) => {
     };
 }
 
-export const createLineItem = (variantId, printProviderId, src, x, y, scale, angle = 0, quantity = 1) => {
+export const createLineItem = (blueprintId, variantId, printProviderId, src, x, y, scale, angle = 0, quantity = 1) => {
     return {
+        blueprint_id: blueprintId,
         variant_id: variantId,
         print_provider_id: printProviderId,
         quantity: quantity,
