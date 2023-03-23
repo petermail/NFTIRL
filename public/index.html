@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/MyIrlNftsIcon.ico" />
+    <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="NFTs In real life"
+      content="My In real life NFTs - make the the crypto revolution happen in-real-life"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -24,10 +25,68 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>NFT IRL</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(window).scroll(function() {
+          if ($(this).scrollTop() > 100) {
+              $('.topImages').hide(1000);
+              clearInterval(timer);
+          }
+       });
+       var index = 0;
+       const timer = setInterval(function() {
+        var imgs = document.getElementsByClassName("img");
+        imgs[index].classList.add("hid");
+        imgs[index].classList.remove("vis");
+
+        index = (index + 1) % imgs.length;
+        imgs[index].classList.remove("hid");
+        imgs[index].classList.add("vis");
+       }, 4000);
+      </script>
+    
+    <title>My IRL NFTs</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="center">
+      <a href="/">
+        <img src="%PUBLIC_URL%/MyIrlNftsXyz.png" alt="My IRL NFTs" />
+      </a>
+      <div class="topImages">
+        <img src="%PUBLIC_URL%/product1.jpg" alt="NFT IRL" class="img vis" />
+        <img src="%PUBLIC_URL%/product2.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product4.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product5.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product12.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product37.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product9.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product10.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product3.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product14.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product15.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product16.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product17.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product11.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product13.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product18.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product19.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product20.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product21.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product22.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product23.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product24.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product26.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product28.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product33.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product34.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product35.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product36.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product38.jpg" alt="NFT IRL" class="img hid" />
+        <img src="%PUBLIC_URL%/product39.jpg" alt="NFT IRL" class="img hid" />
+      </div>
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
