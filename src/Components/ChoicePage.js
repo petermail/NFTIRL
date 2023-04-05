@@ -7,7 +7,7 @@ import DivImage from "./DivImage";
 import DivProduct from "./DivProduct";
 import DivVariants from "./DivVariants";
 import { WalletButton } from "./WalletButton";
-import { addChain, connect, fixChecksumAddress, getBalance, getBalanceOf, getWeb3 } from "../Logic/WalletConn";
+import { addChain, connect, fixChecksumAddress, getBalance, getBalanceOf, getWeb3, verifyAddress } from "../Logic/WalletConn";
 import { getChainMainCoin, getChainName } from "./Converters";
 import { CHAIN_AVALANCHE, CHAIN_BINANCE, CHAIN_CRONOS, CHAIN_ETHEREUM, CHAIN_FANTOM, CHAIN_OPTIMISM, CHAIN_POLYGON } from "./Units";
 import { getAllNftsAsync } from "../Api/NftApi";
@@ -15,8 +15,14 @@ import { DivShipping } from "./DivShipping";
 import { DivPrice } from "./DivPrice";
 import { DivPay } from "./DivPay";
 
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer } from "react-notifications";
+import Web3 from "web3";
+import { usdAddresses } from "../Other/Consts";
+
 const { getCode } = require('country-list');
 
+const isDebug = true;
 var isFirstRun = true;
 const ChoicePage = () => {
     //const [printProvider, setPrintProvider] = useState('');
@@ -27,11 +33,12 @@ const ChoicePage = () => {
     const [product, setProduct] = useState('');
     const [variantId, setVariantId] = useState('');
     const [blueprints, setBlueprints] = useState([]);
-    const [imgSrc, setImgSrc] = useState('https://tse2.mm.bing.net/th?id=OIP.oVeiT4LzCXtk9JVBfN-gMQHaE7');
+    const [imgSrc, setImgSrc] = useState('https://s2.coinmarketcap.com/static/img/coins/64x64/1.png') //https://tse2.mm.bing.net/th?id=OIP.oVeiT4LzCXtk9JVBfN-gMQHaE7');
+    const [friendsWallet, setFriendsWallet] = useState('');
     const blueprint = useRef('');
     const printProvider = useRef('');
     const shipping = useRef({ firstName: '', lastName: '', email: '', phone: '', address1: '', 
-        address2: '', zip: '', city: '', region: '', country: '' });
+        address2: '', zip: '', city: '', region: '', country: 'United States of America' });
     const shippingPrintify = useRef({});
     const [shippingOptions, setShippingOptions] = useState([]);
     const [shippingPrice, setShippingPrice] = useState({});
@@ -47,33 +54,41 @@ const ChoicePage = () => {
     const [web3, setWeb3] = useState(null);
     const [eth, setEth] = useState(null);
     const [images, setImages] = useState([]);
-    
-    useEffect(() => {
-        console.log("images:", images);
-    }, [images]);
+
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
 
     
-    useEffect(() => {
-        if (web3 == null || wallet == null || wallet.length === 0){ return; }
-
-        try {
-            getBalance(web3, wallet, x => setBalance(x));
-            getBalanceOf(web3, wallet, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", x => setUsdc(y => x));
-            getBalanceOf(web3, wallet, "0xdac17f958d2ee523a2206206994597c13d831ec7", x => setUsdt(y => x));
-            getBalanceOf(web3, wallet, "0x4Fabb145d64652a948d72533023f6E7A623C7C53", x => setBusd(y => x));
-        } catch {
-            setBalance(x => x = 0);
-        }
-        
-        console.log("wallet changed");
-        const tempWallet = "0x8c92e2Cdb999f84d2c54459Bd9F23388ab84921A";//"0x3E9E20680dF719E874b60Cd44a9329cc629bC4f1";
-        getAllNftsAsync(tempWallet).then(x => {
-            console.log(x);
-            if (x && x.ownedNfts) {
-                setImages(z => x.ownedNfts.filter(y => y.rawMetadata.image).map(y => y.rawMetadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')));
+    const updateBalance = () => {
+        if (web3 != null && wallet != null && wallet.length > 0) {
+            try {
+                getBalance(web3, wallet, x => setBalance(x));
+                const updateUsdc = x => setUsdc(y => x);
+                const updateUsdt = x => setUsdt(y => x);
+                const updateBusd = x => setBusd(y => x);
+                const addresses = usdAddresses[chain];
+                getBalanceOf(web3, wallet, addresses["USDC"], updateUsdc);
+                getBalanceOf(web3, wallet, addresses["USDT"], updateUsdt);
+                getBalanceOf(web3, wallet, addresses["BUSD"], updateBusd);
+            } catch {
+                setBalance(x => x = 0);
             }
-        });
-    }, [wallet, web3]);
+        } else { setBalance(x => x = 0); }
+    }
+    useEffect(() => {
+        //if (web3 == null){ return; }
+        updateBalance();
+        
+        const usedWallet = friendsWallet ?? wallet;
+        if (usedWallet && verifyAddress(web3 ?? new Web3(), usedWallet)) {
+            getAllNftsAsync(usedWallet).then(x => {
+                console.log(x);
+                if (x && x.ownedNfts) {
+                    setImages(z => x.ownedNfts.filter(y => y.rawMetadata.image).map(y => y.rawMetadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')));
+                }
+            });
+        }
+    }, [wallet, web3, friendsWallet]);
     useEffect(() => {
         if (!isFirstRun) { return; }
         isFirstRun = false;
@@ -87,6 +102,16 @@ const ChoicePage = () => {
             handleCreateProduct(imgSrc, variantId);
         }
     }, [imgSrc]);
+    useEffect(() => {
+        if (variants) {
+            const newVariantId = variants.filter(x => x.options.size === selectedSize 
+                && (x.options?.color === undefined || x.options?.color?.replace(/\s|\//g, '') === selectedColor))[0];
+            console.log('variants: ', variants, 'newVariantId: ', newVariantId);
+            if (newVariantId && newVariantId.id !== variantId) {
+                handleChooseVariant(newVariantId.id);
+            }
+        }
+    }, [variants]);
 
     const addPolygon = () => {
         addChain(eth, CHAIN_POLYGON, getChainName(CHAIN_POLYGON), 
@@ -130,7 +155,9 @@ const ChoicePage = () => {
                 cost: shippingData.profiles.map(y => y.first_item.cost)
             });
         }
-        console.log('best shipping:', result);
+        if (isDebug) {
+            console.log('best shipping: ', result);
+        }
     }
     const connectHandler = () => {
         setWeb3(x => x = getWeb3());
@@ -157,7 +184,7 @@ const ChoicePage = () => {
         });
     }, [web3]);
     useEffect(() => {
-        // Logic when chain is changed
+        updateBalance();
     }, [chain])
 
     const createOrder = () => {
@@ -178,7 +205,9 @@ const ChoicePage = () => {
         //if (variants.length === 0) {
         //console.log('stuff:');
         const printProviders = (await getPrintProvidersAsync(blueprintData.id)).data;
-        console.log("print providers:", printProviders);
+        if (isDebug) {
+            console.log("print providers: ", printProviders);
+        }
         //console.log('blueprint:');
         //console.log(blueprintData);
         //setPrintProvider(x => printProviders[0]);
@@ -191,12 +220,12 @@ const ChoicePage = () => {
             setVariants(y => x.data.variants); 
         });
         //}
-
         
-        getBestShipping(); // TEMP
+        if (isDebug) {
+            getBestShipping(); // TEMP
+        }
     }
     const handleChooseVariant = async (variantId) => {
-        console.log('handleChooseVariant: ' + variantId);
         setVariantId(x => variantId);
 
         await handleCreateProduct(imgSrc, variantId);
@@ -209,14 +238,25 @@ const ChoicePage = () => {
         //console.log(variantId);
         //console.log(blueprint.current);
         const usedVariants = [getVariant(variantId, 1900)];
-        const printAreas = [getPrintArea([variantId], uploadedImg.id, 0.5, 0.5, 1, 0)];
+        const scale = blueprint.current.id === 68 ? 0.7 
+            : ([220, 223, 229, 232].includes(blueprint.current.id) ? 0.8 : 1);
+        const printAreas = [getPrintArea([variantId], uploadedImg.id, 0.5, 0.5, scale, 0)];
         const product = (await saveProductAsync(shopId, 'product on chain ' + chain, 'product for ' + wallet, blueprint.current.id, printProvider.current.id, usedVariants, printAreas)).data;
-        console.log("product:", product);
+        if (isDebug) {
+            console.log("product:", product);
+        }
+        if (product.errors) {
+            return;
+        }
         setProduct(x => product);
-        console.log("base price:", product.variants.find(y => y.id === variantId)?.cost);
+        if (isDebug && product.variants) {
+            console.log("base price:", product.variants.find(y => y.id === variantId)?.cost);
+        }
         setBasePriceUsd(x => product.variants.find(y => y.id === variantId)?.cost ?? 0);
         const shippingData = (await getShippingAsync(blueprint.current.id, printProvider.current.id)).data;
-        console.log("shipping data:", shippingData);
+        if (isDebug) {
+            console.log("shipping data:", shippingData);
+        }
         shippingPrintify.current = shippingData.profiles;
         setShippingOptions(x => [' '].concat(shippingData.profiles.map(y => y.countries[0].replace(/_/g, ' '))));
         updateShippingPrice();
@@ -229,7 +269,6 @@ const ChoicePage = () => {
             if (!regionShipping) {
                 regionShipping = shippingPrintify.current.find(x => x.countries[0] === 'REST_OF_THE_WORLD');
             }
-            console.log('shipping:', shipping.current);
 
             if (regionShipping) {
                 setShippingPrice(x => regionShipping.first_item); // first_item: {cost: 240, currency: 'USD'}
@@ -254,16 +293,17 @@ const ChoicePage = () => {
 
     const divVariants = (blueprintId) => (<div>
     { blueprintId === blueprint.current.id && variants.length > 0 &&
-        <DivVariants variants={variants} handleChooseVariant={handleChooseVariant} handleCreateProduct={handleCreateProduct} variantId={variantId} />
+        <DivVariants product={product} variants={variants} handleChooseVariant={handleChooseVariant} 
+            handleCreateProduct={handleCreateProduct} variantId={variantId}
+            selectedColor={selectedColor} setSelectedColor={setSelectedColor}
+            selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
     }</div>);
     const divProducts = (blueprintId) => (<div>
             { blueprintId === blueprint.current.id && product && variants.find(x => x.id === variantId)
-                && <DivProduct product={product} />}
+                && <DivProduct product={product} isDebug={isDebug} />}
         </div>
     );
     return (<div className="body">
-        {/*<DivWallet />*/}
-        
         <div>
             <DivBlueprints blueprints={blueprints} handleChooseBlueprint={handleChooseBlueprint} 
                 divVariants={divVariants} divProducts={divProducts} blueprint={blueprint.current} />
@@ -279,14 +319,16 @@ const ChoicePage = () => {
                 wallet={wallet} balance={balance} chain={chain} />
                 
             <DivPrice basePriceUsd={basePriceUsd} />
-            <ChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} images={images} handleCreateProduct={handleCreateProduct} />
-            {/*<DivImage handleCreateProduct={handleCreateProduct} src={imgSrc} setSrc={setImgSrc} />*/}
+            <ChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} wallet={wallet} friendsWallet={friendsWallet} setFriendsWallet={setFriendsWallet} 
+                images={images} handleCreateProduct={handleCreateProduct} />
             
             <DivShipping options={shippingOptions} handleShippingChange={handleShippingChange} value={shipping.current} isShippingDone={isShippingDone} />
             { isShippingDone &&
-                <DivPay usdt={usdt} usdc={usdc} busd={busd} chain={chain} basePriceUsd={basePriceUsd} shippingPrice={shippingPrice} onPay={createOrder} />
+                <DivPay usdt={usdt} usdc={usdc} busd={busd} wallet={wallet} chain={chain} web3={web3} connectHandler={connectHandler} basePriceUsd={basePriceUsd} shippingPrice={shippingPrice} onPay={createOrder} />
             }
         </div>
+
+        <NotificationContainer/>
     </div>)
 }
 

@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /*background-color: #aaa;*/
+  /*background-color: #555;*/
 }
 
 code {
@@ -19,6 +19,9 @@ code {
   margin: 0 auto;
 }
 
+.unavailable {
+  opacity: 0.4;
+}
 .mainLayout {
   float: left;
   width: 400px;
@@ -39,6 +42,65 @@ code {
 .navIcon img:hover {
   background-color: #eee;
 }
+.imgWithDetail:hover .navIcon2, .imgWithDetail:hover .navIcon2Right {
+  opacity: 0.5;
+}
+.imgWithDetail .navIcon2:hover, .imgWithDetail .navIcon2Right:hover {
+  opacity: 1;
+}
+.navIcon2, .navIcon2Right {
+  position: absolute;
+  opacity: 0.2;
+}
+.navIcon2 img:hover, .navIcon2Right img:hover {
+  background-color: #eee;
+}
+.navIcon2 {
+  margin: 180px 0 0 10px;
+  /*background-color: white;*/
+}
+.navIcon2 img {
+  width: 40px;
+  cursor: pointer;
+
+}
+.navIcon2Right {
+  margin: 180px 0 0 350px;
+  /*background-color: white;*/
+}
+.navIcon2Right img {
+  width: 40px;
+  cursor: pointer;
+}
+
+.imgWithDetail:hover .point, .imgWithDetail:hover .pointsImg2 .selected {
+  opacity: 0.8;
+}
+.pointsImg {
+  position: absolute;
+  width: 400px;
+}
+.pointsImg2 {
+  display: flex;
+  margin: 360px auto 0 auto;
+  width: fit-content;
+}
+.pointsImg2 .selected {
+  opacity: 0;
+}
+.point {
+  border-radius: 6px;
+  width: 2px;
+  height: 2px;
+  margin: 4px;
+  padding: 6px;
+  opacity: 0;
+  background-color: #aaaaaa;
+}
+.point:hover {
+  background-color: black;
+}
+
 .items {
   display: flex;
   flex-wrap: wrap;
@@ -87,7 +149,7 @@ code {
 }
 
 .blueprints {
-  margin: 20px;
+  margin: 0 20px;
   font-size: 0.8em;
   display: flex;
   flex-wrap: wrap;
@@ -119,85 +181,112 @@ code {
 .colorVariant:hover {
   border: 2px solid gray;
   opacity: 0.80;
+  padding: 2px;
+  margin: 8px;
 }
 .colorVariant {
   margin: 10px;
   width: 20px;
   height: 20px;
   border: 2px solid black;
+  border-radius: 14px;
   cursor: pointer;
 }
 .clBlack, .clSolidBlack {
   background-color: black;
+  border-radius: 14px;
 }
 .clNavy {
   background-color: darkblue;
+  border-radius: 14px;
 }
 .clWhite, .clSolidWhite {
   background-color: white;
+  border-radius: 14px;
 }
 .clSportGrey, .clHeatherGrey {
   background-color: gray;
+  border-radius: 14px;
 }
 .clPurple, .clTeamPurple {
   background-color: purple;
+  border-radius: 14px;
 }
 .clForest, .clGreen {
   background-color: green;
+  border-radius: 14px;
 }
 .clRoyal, .clAthleticNavy {
   background-color: #2b2b74;
+  border-radius: 14px;
 }
 .clNewRed, .clRed {
   background-color: red;
+  border-radius: 14px;
 }
 .clChocolateBrown {
   background-color: #2c2323;
+  border-radius: 14px;
 }
 .clMaroon {
   background-color: #9c2b2b;
+  border-radius: 14px;
 }
 .clOrange {
   background-color: orange;
+  border-radius: 14px;
 }
 .clAthleticHeather, .clCharcoal {
   background-color: #959599;
+  border-radius: 14px;
 }
 .clDarkGreyHeather, .clDarkHeather {
   background-color: rgb(66, 66, 66);
+  border-radius: 14px;
 }
 .clHeatherMauve {
   background-color: #a86076;
+  border-radius: 14px;
 }
 .clTurquoise {
   background-color: #63c9f8;
+  border-radius: 14px;
 }
 .clTrueRoyal {
   background-color: #1c6ca1;
+  border-radius: 14px;
 }
 .clCoral {
   background-color: #e0582f;
+  border-radius: 14px;
 }
 .clSmoke {
   background-color: #464646;
+  border-radius: 14px;
 }
 .clForestGreen {
   background-color: darkgreen;
+  border-radius: 14px;
 }
 .clMilitaryGreen {
   background-color: #2b5223;
+  border-radius: 14px;
 }
 .clDaisy {
-  background-color: #e6e338
+  background-color: #e6e338;
+  border-radius: 14px;
 }
 .clDarkChocolate {
   background-color: #1b1616;
+  border-radius: 14px;
 }
 .clIrishGreen {
-  background-color: #51c53a
+  background-color: #51c53a;
+  border-radius: 14px;
 }
 .clLightBlue {
-  background-color: #a0d0f0
+  background-color: #a0d0f0;
+  border-radius: 14px;
 }
 
 .wallet {
@@ -230,6 +319,7 @@ code {
   margin: 10px;
   padding: 4px 8px; 
   border: 2px solid black;
+  border-radius: 12px;
   background-color: lightgray;
   cursor: pointer;
 }

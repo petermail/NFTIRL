@@ -1,5 +1,6 @@
 import Web3 from "web3";
-import WalletConnect from '@walletconnect/client';
+//import WalletConnect from '@walletconnect/client';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 const minABI = [
   // balanceOf
@@ -59,6 +60,8 @@ const minABI = [
   }
 ];
 
+const projectId = '4e1b2f2458a7012a97839e7ad3f9ba85';
+
 export const getWeb3 = () => {
     const web3 = new Web3(Web3.givenProvider);
     return web3;
@@ -73,14 +76,15 @@ export const connect = (onConnected, onNetworkUpdate, onAccountUpdate) => {
         ethereum.on('chainChanged', onNetworkUpdate)
         ethereum.on('accountsChanged', onAccountUpdate);
     } else {
-      console.log("using bridge connect");
-      const bridge = "https://bridge.walletconnect.org";
+      NotificationManager.error('No wallet to connect to. Install Metamask, please.');
+      console.log("no metamask");
+      //const bridge = "https://bridge.walletconnect.org";
       // create new connector
-      const connector = new WalletConnect({ bridge });
+      /*const connector = new WalletConnect({ bridge });
       if (!connector.connected) {
         // create new session
         connector.createSession();
-      }
+      }*/
 
       //ethereum = new Web3(JSONRPC_URL);
     }

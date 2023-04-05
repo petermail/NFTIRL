@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const proxy = "https://fullbridge.wz.cz/NFTIRL/proxy.php";
+const proxyOrder = "https://fullbridge.wz.cz/NFTIRL/proxyPost.php";
 const baseUrl = "https://api.printify.com/v1/";
 const baseToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjAyNzZjODk5MWQzZWQyM2JmZGVjODhjMGU3NjU1YmEyZmM5OTlkY2U3NGVmMDAwZTMxYzNkZTMwZTIxNGNlNGI5NmEyN2RlNTg3YmQ5ODBlIiwiaWF0IjoxNjcyNDk2ODI2Ljg2Nzc1MiwibmJmIjoxNjcyNDk2ODI2Ljg2Nzc1NSwiZXhwIjoxNzA0MDMyODI2LjgzNDQyNywic3ViIjoiMTExMzkyOTciLCJzY29wZXMiOlsic2hvcHMubWFuYWdlIiwic2hvcHMucmVhZCIsImNhdGFsb2cucmVhZCIsIm9yZGVycy5yZWFkIiwicHJvZHVjdHMucmVhZCIsInByb2R1Y3RzLndyaXRlIiwid2ViaG9va3MucmVhZCIsIndlYmhvb2tzLndyaXRlIiwidXBsb2Fkcy5yZWFkIiwidXBsb2Fkcy53cml0ZSIsInByaW50X3Byb3ZpZGVycy5yZWFkIl19.AiejNaWnqhsM0gAgMLFyCjK0lCnr1tXcenBS_dXzYTxR5f90wmaFyOidn-sK0mJeTLUzXu6zBCdaswqw2fU";
 const baseOrderToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjQ5MzAzMGE4NjI4OTNkMjYxOTg4N2Y4ZmQyNDBjNDUwOGE1ZjdlNjQyMThkZDA4Y2E5MmY4MTI5NTdkOTQ2ZDUxOGQxMTIxMGJiMDIwNzM1IiwiaWF0IjoxNjc3OTY2MjM3LjUxNzcxNCwibmJmIjoxNjc3OTY2MjM3LjUxNzcxOCwiZXhwIjoxNzA5NTg4NjM3LjUxMTk1Mywic3ViIjoiMTExMzkyOTciLCJzY29wZXMiOlsib3JkZXJzLndyaXRlIl19.At-yh8bQuutRQ5RfJeLk2ze7FukjZGMAr4vZM7BedezaHLdKn-qOqldJSszYsTlmZh6knRuwBbdL7vonXmQ";
@@ -95,7 +96,7 @@ export const createLineItem = (blueprintId, variantId, printProviderId, src, x, 
 export const createOrderAsync = async (shopId, externalId, label, lineItems, shippingMethod, 
     firstName, lastName, email, phone, country, region, address1, address2,
     city, zip) => {
-    return await axios.post(proxy, {
+    return await axios.post(proxyOrder, {
         cors: baseUrl + "shops/" + shopId + "/orders.json",
         method: "POST",
         external_id: externalId,

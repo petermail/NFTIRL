@@ -30,7 +30,7 @@ export const WalletButton = (props) => {
         return (
             <div className="wrap wallet">
                 <div className="connect">connected: <b>{shortenWallet(wallet)}</b> &nbsp; {coinRound(chain, balance)} {getChainMainCoin(props.chain)}</div>
-                {["ethereum", "binance", "polygon", "optimism", "cronos", "avalanche", "fantom"].map(x => 
+                {["ethereum", "binance", "polygon", "optimism", "avalanche", "fantom"].map(x => 
                     <div key={x} className={"connectIcon" + (getChainName(chain).toLowerCase() === x ? " selected" : "")} onClick={() => addChain(x)}>
                         <img src={process.env.PUBLIC_URL + "/" + x + '.png'} alt={"switch to " + x} width="22" />
                     </div>)

@@ -1,10 +1,9 @@
 
 export const DivColor = (props) => {
-    const { color, isSelected, handleSelected } = props;
+    const { color, colorValue, isSelected, isAvailable, handleSelected } = props;
 
-    return (<div className={isSelected ? "selected" : ""}>
-        <div className="colorVariant" onClick={handleSelected}>
-            <div className={"cl" + color + " fill"} />
+    return (<div className={(isSelected ? "selected" : "") + (isAvailable ? "" : " unavailable")}>
+        <div className="colorVariant" onClick={handleSelected} style={{backgroundColor: colorValue}}>
         </div>
     </div>)
 }
