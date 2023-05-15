@@ -452,3 +452,34 @@ code {
   cursor: default;
   background-color: #ff9393;
 }
+
+.footer {
+  width: 140px;
+  margin: 0 auto;
+}
+.twitter {
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  background-image: url('./social-networks.png');
+  background-position: -74px -34px;
+  background-repeat: no-repeat;
+  background-size: 360px 360px;
+}
+.twitter:hover {
+  background-position: -74px -180px;
+  cursor: pointer;
+}
+.instagram {
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  background-image: url('./social-networks.png');
+  background-position: -144px -34px;
+  background-repeat: no-repeat;
+  background-size: 360px 360px;
+}
+.instagram:hover {
+  background-position: -144px -180px;
+  cursor: pointer;
+}

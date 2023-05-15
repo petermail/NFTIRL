@@ -28,9 +28,14 @@ export const getAllNftsAsync = async (address) => {
   const nfts = await alchemy.nft.getNftsForOwner(address);
   return nfts;
 }
+
+export const getNftsForContractAsync = async (contract) => {
+  if (contract.length === 0) { return null; }
+  const nfts = await alchemy.nft.getNFTsForCollection(contract);
+  return nfts;
+}
+
 export const getNft = (contract, tokenId, updateImage) => {
-    contract = '0x2953399124F0cBB46d2CbACD8A89cF0599974963';
-    tokenId = '113461209507512867518933452141320285231135646094834536306130710983923277496520';
     fetch('https://deep-index.moralis.io/api/v2/nft/'+contract+'/'+tokenId, options)
         .then((res) => { updateImage(res.json().image); })
         .then((data) => console.log(data));

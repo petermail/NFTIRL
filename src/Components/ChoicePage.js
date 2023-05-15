@@ -10,7 +10,7 @@ import { WalletButton } from "./WalletButton";
 import { addChain, connect, fixChecksumAddress, getBalance, getBalanceOf, getWeb3, verifyAddress } from "../Logic/WalletConn";
 import { getChainMainCoin, getChainName } from "./Converters";
 import { CHAIN_AVALANCHE, CHAIN_BINANCE, CHAIN_CRONOS, CHAIN_ETHEREUM, CHAIN_FANTOM, CHAIN_OPTIMISM, CHAIN_POLYGON } from "./Units";
-import { getAllNftsAsync } from "../Api/NftApi";
+import { getAllNftsAsync, getNftsForContractAsync } from "../Api/NftApi";
 import { DivShipping } from "./DivShipping";
 import { DivPrice } from "./DivPrice";
 import { DivPay } from "./DivPay";
@@ -328,7 +328,12 @@ const ChoicePage = () => {
             }
         </div>
 
-        <NotificationContainer/>
+        <NotificationContainer />
+        <div className="footer">
+            <div className="twitter" />
+            <div className="instagram" />
+            My IRL NFTs | 2023
+        </div>
     </div>)
 }
 
