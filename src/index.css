@@ -26,6 +26,7 @@ code {
   float: left;
   width: 400px;
   height: 400px;
+  margin: 4px;
 }
 .disable {
   opacity: 0.2;
@@ -482,4 +483,9 @@ code {
 .instagram:hover {
   background-position: -144px -180px;
   cursor: pointer;
+}
+
+.loading {
+  position: absolute;
+  z-index: 999;
 }

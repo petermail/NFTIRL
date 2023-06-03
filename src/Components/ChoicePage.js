@@ -57,6 +57,7 @@ const ChoicePage = () => {
 
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     
     const updateBalance = () => {
@@ -89,12 +90,23 @@ const ChoicePage = () => {
             });
         }
     }, [wallet, web3, friendsWallet]);
+    
+    const reorder = (bs) => {
+        const indices = [6, 26, 30, 50, 268, 68, 74, 97, 190, 378, 5, 11, 12, 14, 36, 48, 238, 254, 280, 284, 352, 384, 18, 9, 353, 400, 430];
+        const reordered = bs.filter(x => indices.includes(x.id));
+        const filtered = bs.filter(x => !indices.includes(x.id) && ![40, 143, 167, 255, 256, 291, 292, 306, 329, 346, 347, 348, 349].includes(x.id));
+        for (let i = 0; i < indices.length; ++i) {
+            filtered.splice(i, 0, reordered.find(x => x.id === indices[i]));
+        }
+        return filtered;
+    }
     useEffect(() => {
         if (!isFirstRun) { return; }
         isFirstRun = false;
         getShopsAsync().then(x => setShopId(y => x.data[0].id));
         getBlueprintsAsync().then(x => { 
-            setBlueprints(y => x.data);
+            const reordered = reorder(x.data);
+            setBlueprints(y => reordered);
         });
     });
     useEffect(() => {
@@ -214,6 +226,9 @@ const ChoicePage = () => {
         //setBlueprint(x => blueprint);
         blueprint.current = blueprintData;
         printProvider.current = printProviders[0];
+        if (isDebug) {
+            console.log('blueprint', blueprint.current);
+        }
         //setData(x => x = { blueprint: blueprint, printProvider: printProviders[0] })
         getVariantsAsync(blueprintData.id, printProviders[0].id).then(x =>
         {
@@ -231,6 +246,7 @@ const ChoicePage = () => {
         await handleCreateProduct(imgSrc, variantId);
     }
     const handleCreateProduct = async (src, variantId) => {
+        setIsLoading(x => true);
         //setProduct(x => undefined);
         //setBasePriceUsd(x => 0);
         const uploadedImg = (await uploadImageAsync("testImg001.jpg", src)).data;
@@ -246,9 +262,14 @@ const ChoicePage = () => {
             console.log("product:", product);
         }
         if (product.errors) {
+            setIsLoading(x => false);
             return;
         }
+        if (product && product.images && product.images.length > 0) {
+            new Image().src = product.images[0].src; // Preload image
+        }
         setProduct(x => product);
+        setIsLoading(x => true);
         if (isDebug && product.variants) {
             console.log("base price:", product.variants.find(y => y.id === variantId)?.cost);
         }
@@ -260,6 +281,7 @@ const ChoicePage = () => {
         shippingPrintify.current = shippingData.profiles;
         setShippingOptions(x => [' '].concat(shippingData.profiles.map(y => y.countries[0].replace(/_/g, ' '))));
         updateShippingPrice();
+        //setIsLoading(x => false);
     }
     const updateShippingPrice = () => {
         setShippingPrice(x => ({ cost: 0 }));
@@ -300,7 +322,7 @@ const ChoicePage = () => {
     }</div>);
     const divProducts = (blueprintId) => (<div>
             { blueprintId === blueprint.current.id && product && variants.find(x => x.id === variantId)
-                && <DivProduct product={product} isDebug={isDebug} />}
+                && <DivProduct product={product} isDebug={isDebug} setIsLoading={setIsLoading} />}
         </div>
     );
     return (<div className="body">
@@ -309,6 +331,9 @@ const ChoicePage = () => {
                 divVariants={divVariants} divProducts={divProducts} blueprint={blueprint.current} />
         </div>
         <div className="mainLayout">
+            {isLoading &&
+                <img src={process.env.PUBLIC_URL + "/loading.gif"} className="loading" alt="loading" />
+            }
             {divProducts(blueprint.current.id)}
         </div>
         {divVariants(blueprint.current.id)}

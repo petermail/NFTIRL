@@ -19,8 +19,9 @@ const DivImage = (props)  => {
                 use image url
             </div>)
         } else {
+            const srcReplaced = src.replace("https://github.com/petermail/NFTIRL/raw/master/public/", "");
             return (<div className="divImage">Image url:&nbsp;
-            <input type="text" size={60} value={src} onChange={handleChange} />
+            <input type="text" size={60} value={srcReplaced} onChange={handleChange} />
             {/*<div onClick={() => handleCreateProduct(src)}>upload image and create product</div>*/}
         </div>)
         }

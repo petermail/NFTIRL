@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const DivProduct = (props) => {
-    const { product, isDebug } = props;
+    const { product, isDebug, setIsLoading } = props;
     const [index, setIndex] = useState(0);
 
     const images = product?.images?.filter(x => x.position !== 'back');
@@ -23,7 +23,7 @@ const DivProduct = (props) => {
                 { isDebug && images.length > 1 &&
                     <div className="navIcon2" onClick={() => { setIndex(x => index > 0 ? index - 1 : images.length - 1); }}><img src={process.env.PUBLIC_URL + "/icon_left.png"} alt="left" /></div>
                 }
-                <img src={x.src} width={400} height={400} alt='' />
+                <img src={x.src} width={400} height={400} alt='' onLoad={() => setIsLoading(x => false)} />
                 {/*<div className="imgDetail">
                     <img src={x.src} alt='' width={500} height={500} />
                 </div>*/}

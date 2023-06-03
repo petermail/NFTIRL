@@ -22,7 +22,7 @@ const DivBlueprints = (props) => {
 
     return (<div className="blueprints">
         <div className={"navIcon" + (left === 0 ? " disable" : "")} onClick={() => handleNav(-1)}><img src={process.env.PUBLIC_URL + "/icon_left.png"} alt="left" /></div>
-        { blueprints && blueprints.slice(left, left + 5).map(x => 
+        { blueprints && blueprints.slice(left, left + 10).filter(x => x.images.length > 0).slice(0, 5).map(x => 
             <DivBlueprint key={x.id} blueprint={x} handleChooseBlueprint={handleChooseBlueprint} 
                 divVariants={divVariants} divProducts={divProducts} isSelected={blueprint.id === x.id} />) }
         <div className="navIcon" onClick={() => handleNav(+1)}><img src={process.env.PUBLIC_URL + "/icon_right.png"} alt="left" /></div>

@@ -12,7 +12,7 @@ const DivBlueprint = (props) => {
     }
     const index = getImgIndex();
 
-    if (blueprint) {
+    if (blueprint && blueprint.images.length > 0) {
         return (
         <div className={"blueprint" + (isSelected ? " selected" : "")} onClick={() => handleChooseBlueprint(blueprint)}>
             <div className="tooltip">
