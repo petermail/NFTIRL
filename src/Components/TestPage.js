@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { getBlueprintsAsync, getImagesAsync, getPrintArea, getPrintProvidersAsync, getShippingAsync, getShopsAsync, getVariant, getVariantsAsync, saveProductAsync, uploadImageAsync } from '../Api/PrintifyApi'
 import ChoicePage from './ChoicePage';
+import AltChoicePage from './AltChoicePage';
 import DivBlueprints from './DivBlueprints';
 
 var isFirstRun = true;
@@ -45,7 +46,7 @@ const TestPage = () => {
 
     return (
         <div>
-            <ChoicePage />
+            <AltChoicePage />
         </div>
     )
 };

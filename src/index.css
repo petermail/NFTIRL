@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /*background-color: #555;*/
+  /*background-color: #555;/**/
 }
 
 code {
@@ -488,4 +488,25 @@ code {
 .loading {
   position: absolute;
   z-index: 999;
+}
+
+.wallet2 {
+  margin: 10px auto;
+  padding: 10px;
+  background-color: #666;
+  width: 300px;
+}
+.wallet2:hover {
+  background-color: #777;
+}
+.wallet2 div {
+  text-align: center;
+}
+
+.imageFit img {
+  max-width: 160px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
+  display: block;
 }
