@@ -27,7 +27,7 @@ const AltChooseImage = (props) => {
     }
 
     useEffect(() => {
-        if (!imgSrc) {
+        if (!imgSrc || !defaultImages.find(x => x === imgSrc)) {
             setImgSrc(x => x = defaultImages[0]);
         }
     }, [])
@@ -36,11 +36,6 @@ const AltChooseImage = (props) => {
         <div className={"navIcon" + (left === 0 ? " disable" : "")} onClick={() => handleNav(-1)}>
             <img src={process.env.PUBLIC_URL + "/icon_left.png"} alt="left" />
         </div>
-            {imgSrc && !images.includes(imgSrc) && 
-                <div>
-                    <img className={getClass(imgSrc)} key={imgSrc} src={imgSrc} alt='' onClick={() => setImgSrc(imgSrc)} />
-                </div>
-            }
             {images.slice(0 + left, 5 + left).map((x, i) => <img className={getClass(x)} key={i} src={x} alt='' width={160} height={160} onClick={() => setImgSrc(x)} />)}
         <div className={"navIcon" + (images.length - left - 5 <= 0 ? " disable" : "")} onClick={() => handleNav(+1)}>
             <img src={process.env.PUBLIC_URL + "/icon_right.png"} alt="right" />

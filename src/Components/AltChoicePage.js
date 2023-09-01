@@ -36,7 +36,7 @@ const AltChoicePage = () => {
     const [variantId, setVariantId] = useState('');
     const [blueprints, setBlueprints] = useState([]);
     const [imgSrc, setImgSrc] = useState(''); //https://tse2.mm.bing.net/th?id=OIP.oVeiT4LzCXtk9JVBfN-gMQHaE7');
-    const [friendsWallet, setFriendsWallet] = useState(''); //0x0C86262354095Fa35A21b58af3e0DD94d0ba767c
+    const [friendsWallet, setFriendsWallet] = useState(null); //0x0C86262354095Fa35A21b58af3e0DD94d0ba767c
     const blueprint = useRef('');
     const printProvider = useRef('');
     const shipping = useRef({ firstName: '', lastName: '', email: '', phone: '', address1: '', 
@@ -83,6 +83,7 @@ const AltChoicePage = () => {
         updateBalance();
         
         const usedWallet = friendsWallet ?? wallet;
+        console.log('usedWallet', usedWallet);
         if (usedWallet && verifyAddress(web3 ?? new Web3(), usedWallet)) {
             getAllNftsAsync(usedWallet).then(x => {
                 console.log(x);
@@ -266,8 +267,7 @@ const AltChoicePage = () => {
                 addFantom={addFantom} addAvalanche={addAvalanche} addCronos={addCronos}
                 wallet={wallet} balance={balance} chain={chain} />
         </div>
-        <AltChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} wallet={wallet} friendsWallet={friendsWallet} setFriendsWallet={setFriendsWallet} 
-            images={images} handleCreateProduct={handleCreateProduct} />
+        <AltChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} images={images} />
         <div>
             <AltProducts idDebug={isDebug} imgSrc={imgSrc} shopId={shopId} blueprints={blueprints} blueprint={blueprint.current} />
         </div>
