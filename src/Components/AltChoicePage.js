@@ -24,7 +24,7 @@ import AltProducts from "./AltProducts";
 
 const { getCode } = require('country-list');
 
-const isDebug = false;
+const isDebug = true;
 var isFirstRun = true;
 const AltChoicePage = () => {
     //const [printProvider, setPrintProvider] = useState('');
@@ -95,13 +95,9 @@ const AltChoicePage = () => {
     }, [wallet, web3, friendsWallet]);
     
     const reorder = (bs) => {
-        const indices = [6, 26, 30, 50, 268, 68, 74, 97, 190, 378, 5, 11, 12, 14, 36, 48, 238, 254, 280, 284, 352, 384, 18, 9, 353, 400, 430];
+        const indices = [12, 6, 49, 88, 1108, 618, 789, 1090, 892];
         const reordered = bs.filter(x => indices.includes(x.id));
-        const filtered = bs.filter(x => !indices.includes(x.id) && ![40, 143, 167, 255, 256, 291, 292, 306, 329, 346, 347, 348, 349].includes(x.id));
-        for (let i = 0; i < indices.length; ++i) {
-            filtered.splice(i, 0, reordered.find(x => x.id === indices[i]));
-        }
-        return filtered;
+        return reordered;
     }
     useEffect(() => {
         if (!isFirstRun) { return; }
@@ -269,7 +265,7 @@ const AltChoicePage = () => {
         </div>
         <AltChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} images={images} />
         <div>
-            <AltProducts idDebug={isDebug} imgSrc={imgSrc} shopId={shopId} blueprints={blueprints} blueprint={blueprint.current} />
+            <AltProducts isDebug={isDebug} imgSrc={imgSrc} shopId={shopId} blueprints={blueprints} blueprint={blueprint.current} />
         </div>
 
         <NotificationContainer />

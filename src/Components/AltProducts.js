@@ -6,7 +6,7 @@ const AltProducts = (props) => {
     const { blueprints, isDebug, imgSrc, shopId } = props;
 
     return (<div className="wrap">
-            { blueprints.splice(0, 6).map(x => 
+            { blueprints.splice(0, 9).map(x => 
                     <AltProduct key={x.id} activeBlueprint={x} imgSrc={imgSrc} shopId={shopId} isDebug={isDebug} />
                 )
             }

@@ -57,7 +57,7 @@ code {
   background-color: #eee;
 }
 .navIcon2 {
-  margin: 180px 0 0 10px;
+  margin: 140px 0 0 10px; /*180px 0 0 10px;*/
   /*background-color: white;*/
 }
 .navIcon2 img {
@@ -66,7 +66,7 @@ code {
 
 }
 .navIcon2Right {
-  margin: 180px 0 0 350px;
+  margin: 140px 0 0 250px; /*180px 0 0 350px;*/
   /*background-color: white;*/
 }
 .navIcon2Right img {
@@ -79,11 +79,11 @@ code {
 }
 .pointsImg {
   position: absolute;
-  width: 400px;
+  width: 300px;/*400px;*/
 }
 .pointsImg2 {
   display: flex;
-  margin: 360px auto 0 auto;
+  margin: 260px auto 0 auto; /*360px auto 0 auto;*/
   width: fit-content;
 }
 .pointsImg2 .selected {
