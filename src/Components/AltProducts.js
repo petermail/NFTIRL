@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getPrintArea, getPrintProvidersAsync, getVariant, getVariantsAsync, saveProductAsync, uploadImageAsync } from "../Api/PrintifyApi";
-import DivProduct from "./DivProduct";
+import AltDivProduct from "./AltDivProduct";
+import AltVariants from "./AltVariants";
+import DivVariants from "./DivVariants";
 
 const AltProducts = (props) => {
     const { blueprints, isDebug, imgSrc, shopId } = props;
 
+    const filtered = [...blueprints].splice(0, 9);
     return (<div className="wrap">
-            { blueprints.splice(0, 9).map(x => 
+            { filtered.map(x => 
                     <AltProduct key={x.id} activeBlueprint={x} imgSrc={imgSrc} shopId={shopId} isDebug={isDebug} />
                 )
             }
@@ -19,8 +22,18 @@ const AltProduct = (props) => {
     const [variants, setVariants] = useState({});
     const [variantId, setVariantId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
     const printProvider = useRef('');
     const blueprint = useRef('');
+    
+    const divVariants = (blueprintId) => (<>
+        { blueprintId === blueprint.current.id && variants.length > 0 &&
+            <AltVariants product={product} variants={variants} handleChooseVariant={handleChooseVariant} 
+                handleCreateProduct={handleCreateProduct} variantId={variantId}
+                selectedColor={selectedColor} setSelectedColor={setSelectedColor}
+                selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
+        }</>);
 
     const handleChooseBlueprint = async (blueprintData) => {
         const printProviders = (await getPrintProvidersAsync(blueprintData.id)).data;
@@ -35,6 +48,9 @@ const AltProduct = (props) => {
         getVariantsAsync(blueprintData.id, printProviders[0].id).then(x =>
         {
             setVariants(y => x.data.variants);
+            if (isDebug) {
+                console.log('variants', x.data.variants);
+            }
             const first = x.data.variants[0];
             if (first) {
                 handleChooseVariant(first.id);
@@ -61,6 +77,7 @@ const AltProduct = (props) => {
         const printAreas = [getPrintArea([variantId], uploadedImg.id, 0.5, 0.5, scale, 0)];
         const chain = '';
         const wallet = '';
+        console.log('before save product:', shopId, src, blueprint.current.id, printProvider.current.id, usedVariants, printAreas);
         const product = (await saveProductAsync(shopId, 'product on chain ' + chain, 'product for ' + wallet, blueprint.current.id, printProvider.current.id, usedVariants, printAreas)).data;
         if (isDebug) {
             console.log("product:", product);
@@ -70,7 +87,17 @@ const AltProduct = (props) => {
             return;
         }
         if (product && product.images && product.images.length > 0) {
-            new Image().src = product.images[0].src; // Preload image
+            const img = new Image();
+            img.onerror += (ev) => {
+                console.error('image load failed');
+                setTimeout(function () {
+                    new Image().src = product.images[0].src; // Preload image
+                }, 2000);
+            };
+            img.onload += (ev) => {
+                console.log('image loaded');
+            }
+            img.src = product.images[0].src; // Preload image
         }
         setProduct(x => product);
         setIsLoading(x => true);
@@ -92,11 +119,12 @@ const AltProduct = (props) => {
                 <img src={process.env.PUBLIC_URL + "/loading.gif"} className="loading" alt="loading" />
             }
             { blueprintId === blueprint.current.id && product && variants.find(x => x.id === variantId)
-                && <DivProduct product={product} isDebug={isDebug} setIsLoading={setIsLoading} />}
+                && <AltDivProduct product={product} isDebug={isDebug} setIsLoading={setIsLoading} getVariants={() => divVariants(blueprint.current.id)} />}
         </div>
     );
 
     useEffect(() => {
+        console.log('rewrite ', activeBlueprint);
         handleChooseBlueprint(activeBlueprint);
     }, []);
 

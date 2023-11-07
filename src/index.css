@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /*background-color: #555;/**/
+  background-color: #555;/**/
 }
 
 code {
@@ -179,7 +179,7 @@ code {
   border-left: 0;
   border-right: 0;
 }
-.colorVariant:hover {
+/*.colorVariant:hover {
   border: 2px solid gray;
   opacity: 0.80;
   padding: 2px;
@@ -192,7 +192,7 @@ code {
   border: 2px solid black;
   border-radius: 14px;
   cursor: pointer;
-}
+}*/
 .clBlack, .clSolidBlack {
   background-color: black;
   border-radius: 14px;
@@ -316,7 +316,7 @@ code {
   width: 100%;
   height: 100%;
 }
-.sizeVariant {
+/*.sizeVariant {
   margin: 10px;
   padding: 4px 8px; 
   border: 2px solid black;
@@ -326,7 +326,7 @@ code {
 }
 .sizeVariant:hover {
   background-color: white;
-}
+}*/
 .divImage {
   margin: 10px;
 }
@@ -488,6 +488,7 @@ code {
 .loading {
   position: absolute;
   z-index: 999;
+  margin: 230px 0;
 }
 
 .wallet2 {
@@ -509,4 +510,42 @@ code {
   width: auto;
   height: auto;
   display: block;
+}
+
+.altItems {
+  display: flex;
+  flex-wrap: wrap;
+}
+.altVariants {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: 5px;
+}
+.colorVariant:hover {
+  border: 1px solid gray;
+  opacity: 1;
+  margin: 4px;
+}
+.colorVariant {
+  margin: 4px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+  border: 1px solid black;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.sizeVariant {
+  margin: 4px;
+  padding: 2px 4px; 
+  border: 1px solid black;
+  background-color: lightgray;
+  cursor: pointer;
+  opacity: 0.5;
+}
+.sizeVariant:hover {
+  /*background-color: white;*/
+  opacity: 1;
 }

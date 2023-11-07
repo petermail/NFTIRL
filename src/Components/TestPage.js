@@ -3,6 +3,8 @@ import { getBlueprintsAsync, getImagesAsync, getPrintArea, getPrintProvidersAsyn
 import ChoicePage from './ChoicePage';
 import AltChoicePage from './AltChoicePage';
 import DivBlueprints from './DivBlueprints';
+import { AltMainPage } from './AltMainPage';
+import { DataProvider } from '../Base/DataProvider';
 
 var isFirstRun = true;
 const runTest = async () => {
@@ -46,7 +48,9 @@ const TestPage = () => {
 
     return (
         <div>
-            <AltChoicePage />
+            <DataProvider>
+                <AltMainPage />
+            </DataProvider>
         </div>
     )
 };

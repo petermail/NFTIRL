@@ -4,7 +4,7 @@ import { DivColor } from "./DivColor";
 import { DivSize } from "./DivSize";
 import DivVariant from "./DivVariant";
 
-const DivVariants = (props) => {
+const AltVariants = (props) => {
     const { product, variants, handleCreateProduct, handleChooseVariant, variantId, isDebug,
         selectedColor, setSelectedColor, selectedSize, setSelectedSize
     } = props;
@@ -53,15 +53,19 @@ const DivVariants = (props) => {
     if (isDebug) {
         console.log('colors/sizes:', colors, sizes);
     }
-    return (<div className="variants">
-        <div className="items">
-            {colors.map((x, i) => <DivColor key={x} color={x} colorValue={product?.options?.filter(y => y.type === 'color')[0]?.values.filter(y => y.title.replace(/\s|\//g, '') === x)[0]?.colors[0]} 
-                isSelected={selectedColor === x} isAvailable={isAvailable(selectedSize, x)} handleSelected={() => handleColor(x)} />)}
-        </div>
-        <div className="items">
-            {sizes.map(x => <DivSize key={x} size={x} isSelected={selectedSize === x} isAvailable={isAvailable(x, selectedColor)} handleSelected={() => handleSize(x)} />)}
-        </div>
+    return (<div className="altVariants">
+        { colors.length > 1 &&
+            <div className="altItems">
+                {colors.map((x, i) => <DivColor key={x} color={x} colorValue={product?.options?.filter(y => y.type === 'color')[0]?.values.filter(y => y.title.replace(/\s|\//g, '') === x)[0]?.colors[0]} 
+                    isSelected={selectedColor === x} isAvailable={isAvailable(selectedSize, x)} handleSelected={() => handleColor(x)} />)}
+            </div>
+        }
+        { sizes.length > 1 &&
+            <div className="altItems">
+                {sizes.map(x => <DivSize key={x} size={x} isSelected={selectedSize === x} isAvailable={isAvailable(x, selectedColor)} handleSelected={() => handleSize(x)} />)}
+            </div>
+        }
     </div>)
 }
 
-export default DivVariants;
+export default AltVariants;

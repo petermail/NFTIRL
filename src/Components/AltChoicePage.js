@@ -26,15 +26,16 @@ const { getCode } = require('country-list');
 
 const isDebug = true;
 var isFirstRun = true;
-const AltChoicePage = () => {
+const AltChoicePage = (props) => {
+    const { blueprints, shopId } = props;
     //const [printProvider, setPrintProvider] = useState('');
     //const [blueprint, setBlueprint] = useState('');
     //const [data, setData] = useState('');
     const [variants, setVariants] = useState([]);
-    const [shopId, setShopId] = useState('');
+    //const [shopId, setShopId] = useState('');
     const [product, setProduct] = useState('');
     const [variantId, setVariantId] = useState('');
-    const [blueprints, setBlueprints] = useState([]);
+    //const [blueprints, setBlueprints] = useState([]);
     const [imgSrc, setImgSrc] = useState(''); //https://tse2.mm.bing.net/th?id=OIP.oVeiT4LzCXtk9JVBfN-gMQHaE7');
     const [friendsWallet, setFriendsWallet] = useState(null); //0x0C86262354095Fa35A21b58af3e0DD94d0ba767c
     const blueprint = useRef('');
@@ -99,15 +100,16 @@ const AltChoicePage = () => {
         const reordered = bs.filter(x => indices.includes(x.id));
         return reordered;
     }
-    useEffect(() => {
-        if (!isFirstRun) { return; }
+    /*useEffect(() => {
+        if (blueprints.length !== 0) { return; }
         isFirstRun = false;
         getShopsAsync().then(x => setShopId(y => x.data[0].id));
         getBlueprintsAsync().then(x => { 
             const reordered = reorder(x.data);
+            console.log('set blueprints', reordered);
             setBlueprints(y => reordered);
         });
-    });
+    }, []);*/
     useEffect(() => {
         if (variantId) {
             handleCreateProduct(imgSrc, variantId);
@@ -117,7 +119,6 @@ const AltChoicePage = () => {
         if (variants) {
             const newVariantId = variants.filter(x => x.options.size === selectedSize 
                 && (x.options?.color === undefined || x.options?.color?.replace(/\s|\//g, '') === selectedColor))[0];
-            console.log('variants: ', variants, 'newVariantId: ', newVariantId);
             if (newVariantId && newVariantId.id !== variantId) {
                 handleChooseVariant(newVariantId.id);
             }
