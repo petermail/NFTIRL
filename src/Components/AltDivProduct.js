@@ -7,7 +7,7 @@ const AltDivProduct = (props) => {
     const images = product?.images?.filter(x => x.position !== 'back');
     if (images && index >= images.length) { setIndex(x => 0); }
     if (isDebug){
-        console.log('images', images);
+        //console.log('images', images);
     }
     return (<div>
         {/*<h4>{product.title}</h4>*/}

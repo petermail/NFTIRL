@@ -5,7 +5,7 @@ import { DivSize } from "./DivSize";
 import DivVariant from "./DivVariant";
 
 const AltVariants = (props) => {
-    const { product, variants, handleCreateProduct, handleChooseVariant, variantId, isDebug,
+    const { product, variants, blueprintId, handleChooseVariant, variantId, isDebug,
         selectedColor, setSelectedColor, selectedSize, setSelectedSize
     } = props;
     /*const [selectedColor, setSelectedColor] = useState('');
@@ -20,7 +20,7 @@ const AltVariants = (props) => {
                 && (colors.length === 0 || x.options.color?.replace(/\s|\//g, '') === selectedColor))[0];
             console.log('variants: ', variants, 'selected variant: ', variant, 'color: ', selectedColor, 'option colors:', variants.map(x => x.options.color));
             if (variant && variant.id && (variantId !== variant.Id)) {
-                handleChooseVariant(variant.id);
+                handleChooseVariant(blueprintId, variant.id);
             }
         }
     }, [selectedColor, selectedSize]);

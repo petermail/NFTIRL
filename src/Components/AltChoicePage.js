@@ -21,21 +21,15 @@ import Web3 from "web3";
 import { usdAddresses } from "../Other/Consts";
 import AltChooseImage from "./AltChooseImage";
 import AltProducts from "./AltProducts";
+import { useData } from "../Base/DataProvider";
 
 const { getCode } = require('country-list');
 
 const isDebug = true;
-var isFirstRun = true;
 const AltChoicePage = (props) => {
-    const { blueprints, shopId } = props;
-    //const [printProvider, setPrintProvider] = useState('');
-    //const [blueprint, setBlueprint] = useState('');
-    //const [data, setData] = useState('');
-    const [variants, setVariants] = useState([]);
-    //const [shopId, setShopId] = useState('');
-    const [product, setProduct] = useState('');
-    const [variantId, setVariantId] = useState('');
-    //const [blueprints, setBlueprints] = useState([]);
+    //const { shopId } = props;
+    const { item, blueprints, changeImage } = useData();
+    
     const [imgSrc, setImgSrc] = useState(''); //https://tse2.mm.bing.net/th?id=OIP.oVeiT4LzCXtk9JVBfN-gMQHaE7');
     const [friendsWallet, setFriendsWallet] = useState(null); //0x0C86262354095Fa35A21b58af3e0DD94d0ba767c
     const blueprint = useRef('');
@@ -95,35 +89,6 @@ const AltChoicePage = (props) => {
         }
     }, [wallet, web3, friendsWallet]);
     
-    const reorder = (bs) => {
-        const indices = [12, 6, 49, 88, 1108, 618, 789, 1090, 892];
-        const reordered = bs.filter(x => indices.includes(x.id));
-        return reordered;
-    }
-    /*useEffect(() => {
-        if (blueprints.length !== 0) { return; }
-        isFirstRun = false;
-        getShopsAsync().then(x => setShopId(y => x.data[0].id));
-        getBlueprintsAsync().then(x => { 
-            const reordered = reorder(x.data);
-            console.log('set blueprints', reordered);
-            setBlueprints(y => reordered);
-        });
-    }, []);*/
-    useEffect(() => {
-        if (variantId) {
-            handleCreateProduct(imgSrc, variantId);
-        }
-    }, [imgSrc]);
-    useEffect(() => {
-        if (variants) {
-            const newVariantId = variants.filter(x => x.options.size === selectedSize 
-                && (x.options?.color === undefined || x.options?.color?.replace(/\s|\//g, '') === selectedColor))[0];
-            if (newVariantId && newVariantId.id !== variantId) {
-                handleChooseVariant(newVariantId.id);
-            }
-        }
-    }, [variants]);
 
     const addPolygon = () => {
         addChain(eth, CHAIN_POLYGON, getChainName(CHAIN_POLYGON), 
@@ -155,8 +120,7 @@ const AltChoicePage = (props) => {
     }
 
     
-    const getBestShipping = async () => {
-        const blueprintId = blueprint.current.id;
+    const getBestShipping = async (blueprintId) => {
         const printProviders = (await getPrintProvidersAsync(blueprintId)).data;
         const result = [];
         for (let i = 0; i < printProviders.length; ++i) {
@@ -198,50 +162,11 @@ const AltChoicePage = (props) => {
     useEffect(() => {
         updateBalance();
     }, [chain]);
+    useEffect(() => {
+        console.log('changeImage');
+        changeImage(imgSrc);
+    }, [changeImage, imgSrc]);
 
-    const handleChooseVariant = async (variantId) => {
-        setVariantId(x => variantId);
-
-        await handleCreateProduct(imgSrc, variantId);
-    }
-    const handleCreateProduct = async (src, variantId) => {
-        setIsLoading(x => true);
-        //setProduct(x => undefined);
-        //setBasePriceUsd(x => 0);
-        const uploadedImg = (await uploadImageAsync("testImg001.jpg", src)).data;
-        //console.log(uploadedImg);
-        //console.log(variantId);
-        //console.log(blueprint.current);
-        const usedVariants = [getVariant(variantId, 1900)];
-        const scale = blueprint.current.id === 68 ? 0.7 
-            : ([220, 223, 229, 232].includes(blueprint.current.id) ? 0.8 : 1);
-        const printAreas = [getPrintArea([variantId], uploadedImg.id, 0.5, 0.5, scale, 0)];
-        const product = (await saveProductAsync(shopId, 'product on chain ' + chain, 'product for ' + wallet, blueprint.current.id, printProvider.current.id, usedVariants, printAreas)).data;
-        if (isDebug) {
-            console.log("product:", product);
-        }
-        if (product.errors) {
-            setIsLoading(x => false);
-            return;
-        }
-        if (product && product.images && product.images.length > 0) {
-            new Image().src = product.images[0].src; // Preload image
-        }
-        setProduct(x => product);
-        setIsLoading(x => true);
-        if (isDebug && product.variants) {
-            console.log("base price:", product.variants.find(y => y.id === variantId)?.cost);
-        }
-        setBasePriceUsd(x => product.variants.find(y => y.id === variantId)?.cost ?? 0);
-        const shippingData = (await getShippingAsync(blueprint.current.id, printProvider.current.id)).data;
-        if (isDebug) {
-            console.log("shipping data:", shippingData);
-        }
-        shippingPrintify.current = shippingData.profiles;
-        setShippingOptions(x => [' '].concat(shippingData.profiles.map(y => y.countries[0].replace(/_/g, ' '))));
-        updateShippingPrice();
-        //setIsLoading(x => false);
-    }
     const updateShippingPrice = () => {
         setShippingPrice(x => ({ cost: 0 }));
         if (shipping.current && shipping.current.country) {
@@ -266,7 +191,7 @@ const AltChoicePage = (props) => {
         </div>
         <AltChooseImage imgSrc={imgSrc} setImgSrc={setImgSrc} images={images} />
         <div>
-            <AltProducts isDebug={isDebug} imgSrc={imgSrc} shopId={shopId} blueprints={blueprints} blueprint={blueprint.current} />
+            <AltProducts isDebug={isDebug} imgSrc={imgSrc} shopId={item.shopId} blueprints={blueprints} />
         </div>
 
         <NotificationContainer />
